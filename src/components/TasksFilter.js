@@ -1,18 +1,14 @@
 import React from "react";
 import cn from 'classnames';
 import PropTypes from 'prop-types';
+import { status } from './constants';
 
-const filterButton = [
- 'All',
- 'Active',
- 'Completed'
-];
 
 const TasksFilter = ({ changeFilter, filter }) => {
   return (
     <ul className="filters">
       {
-        filterButton.map( item => {
+        Object.values(status).map( item => {
 
           const className = cn({
             selected: item === filter

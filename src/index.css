@@ -84,6 +84,12 @@ body {
 	text-rendering: optimizeLegibility;
 }
 
+.todoapp h2 {
+  text-align: center;
+  opacity: 0.6;
+}
+
+
 .new-todo,
 .edit {
 	position: relative;

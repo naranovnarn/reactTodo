@@ -4,11 +4,29 @@ import Header from "./Header";
 import TaskList from "./TaskList";
 
 
+const generateKey = (pre) => {
+  return `${ pre }_${ new Date().getTime() }`;
+}
+
+
 class App extends React.Component {
 
-  fakeId = 100
+  state = {
+    tasks : [],
+    filterTask: 'All'
+  }
 
-  state = this.props.data
+  componentDidUpdate() {
+    localStorage.setItem('data', JSON.stringify(this.state))
+  }
+
+  componentDidMount() {
+    const data = JSON.parse(localStorage.getItem('data'))
+    this.setState({
+      ...data
+    })
+  }
+
 
   changeStatusTask = (id) => {
     const oldTasks = [...this.state.tasks]
@@ -49,7 +67,7 @@ class App extends React.Component {
 
     const newTask = {
       editing: false,
-      id: this.fakeId++,
+      id: generateKey(description),
       created: new Date(),
       description,
       done: false
@@ -120,13 +138,18 @@ class App extends React.Component {
       <section className="todoapp">
         <Header addTask={this.addTask}/>
         <section className="main">
-          <TaskList 
-            startEditTask={this.startEditTask}
-            finishEditTask={this.finishEditTask}
-            tasks={renderListItem} 
-            changeStatusTask={this.changeStatusTask} 
-            deleteTask={this.deleteTask} 
-          />
+          {
+            renderListItem.length > 0 ? 
+              <TaskList 
+              startEditTask={this.startEditTask}
+              finishEditTask={this.finishEditTask}
+              tasks={renderListItem} 
+              changeStatusTask={this.changeStatusTask} 
+              deleteTask={this.deleteTask} 
+              />
+              :
+              <h2>there's no todos yet</h2>
+          }
           <Footer 
             changeFilter={this.changeFilter} 
             filter={this.state.filterTask} 
@@ -139,34 +162,7 @@ class App extends React.Component {
   }
 }
 
-App.defaultProps = {
-  data: {
-    tasks : [
-      {
-        editing: false,
-        done: true,
-        id: 1,
-        created: new Date(2020, 6, 2),
-        description: "Completed task",
-      },
-      {
-        editing: false,
-        done: true,
-        id: 2,
-        created: new Date(2021, 6, 2),
-        description: "Editing task",
-      },
-      {
-        editing: false,
-        done: false,
-        id: 3,
-        created: new Date(1992, 6, 2),
-        description: "Active task",
-      },
-    ],
-    filterTask: 'All'
-  }
-};
+
 
 
 export default App;

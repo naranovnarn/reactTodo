@@ -1,11 +1,13 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import { ENTER } from "./constants";
+
 
 const Header = ({addTask}) => {
 
   function addnewTask(e) {
 
-    if (e.keyCode === 13) {
+    if (e.key === ENTER) {
       addTask(e.target.value.trim());
       e.target.value = '';
     }
